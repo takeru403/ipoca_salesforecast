@@ -1,0 +1,32 @@
+version: '3'
+#アプリケーションを動かす各要素のこと
+services:
+  jupyter:
+    restart: always
+    build: .
+    container_name: jupyterlab
+    tty: true
+    volumes:
+      - ./opt:/root/opt
+    ports: 
+      - '8080:8080'
+    #トークンなしでjupyterlabを開けるようにする。
+    command: jupyter-lab --ip 0.0.0.0 --port=8080 --allow-root --no-browser --NotebookApp.token=''
+
+  streamlit:
+    restart: always
+    build: .
+    container_name: streamlit
+    tty: true
+    volumes: 
+      - ./opt:/root/opt
+    ports: 
+      - '8501:8501'
+    command: streamlit run /opt/main.py
+
+
+
+
+
+
+

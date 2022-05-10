@@ -48,6 +48,10 @@ def app():
                     #ここでエラーが出る。
                 final = finalize_model(model)
                 save_model(final, select_model+'_saved_'+datetime.date.today().strftime('%Y%m%d'))
+                #特徴量寄与度
+                plot_model(model, plot="feature", display_format="streamlit")
+                #残差
+                plot_model(model, plot="error", display_format="streamlit")
                 st.markdown("モデル構築が完了しました")
                 
                 st.markdown("自分のパソコンに拡張子がpklのファイルがあることを確認して、予測フェーズへと進んでください")
@@ -57,13 +61,7 @@ def app():
 
 
 
-#エクスパンだー
-# expander1 = st.beta_expander("モデルの精度が上がりません")
-# expander1.write("データに欠損値がないのか、確認してください")
-# expander2 = st.beta_expander("データが読み込みません")
-# expander2.write("拡張子がcsvになっているのか確認してください")
-# expander3 = st.beta_expander("その他")
-# expander3.write("こちらまで連絡ください")
+
 
 
 #学習中にこの表示を行う
