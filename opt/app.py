@@ -13,9 +13,9 @@ page = PAGES[selection]
 page.app()
 
 #エクスパンだー
-expander1 = st.beta_expander("モデルの精度が上がりません")
-expander1.write("データに欠損値がないのか、確認してください")
-expander2 = st.beta_expander("データが読み込みません")
-expander2.write("拡張子がcsvになっているのか確認してください")
-expander3 = st.beta_expander("その他")
-expander3.write("こちらまで連絡ください")
+# expander1 = st.beta_expander("モデルの精度が上がりません")
+# expander1.write("データに欠損値がないのか、確認してください")
+# expander2 = st.beta_expander("データが読み込みません")
+# expander2.write("拡張子がcsvになっているのか確認してください")
+# expander3 = st.beta_expander("その他")
+# expander3.write("こちらまで連絡ください")

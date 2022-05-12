@@ -1,7 +1,9 @@
 from matplotlib.style import use
+import seaborn as sns
+import matplotlib.pyplot as plt
+# import japanize_matplotlib
 import streamlit as st
 import pandas as pd
-from pycaret.regression import * 
 import datetime
 import os
 import streamlit.components.v1 as stc
@@ -16,19 +18,31 @@ def app():
 
     #学習用データをアップロードされた後の処理
     if uploaded_file is not None:
-        df = pd.read_csv(uploaded_file)
+        #オプションのthousandsでカンマを文字列として扱わなくなる。
+        df = pd.read_csv(uploaded_file,thousands=',')
         st.write("学習用データのアップロードが完了しました")
         
-        #無理矢理型を変換する(ここは直さないとエラーが起こる可能性がある。エラー処理の場所として検討する)
         df = df.set_index('店舗名')
-        df = df.replace(',','', regex=True)
-        df['年商']= df['年商'].astype(int)
-        df['レジ客数'] = df['レジ客数'].astype(int)
-
         st.dataframe(df, 800,300)
         
+        #変数間の相関行列を出すとだいぶ重くなる。
+        # fig, ax = plt.subplots(figsize=(10,10))
+        # sns.heatmap(df.corr(), annot=True, ax=ax)
+        # st.pyplot(fig)
+        #削除したい説明変数を選択
+
+        st.markdown("## 削除したい説明変数はありますか?")
+        @st.cache()
+        def delete_feature(deletes):
+            df = df.drop(deletes, axis=1)
+            return df
+        deletes = st.multiselect("削除したい説明変数を入力してください。",list(df.columns))
+        df = df.drop(deletes, axis=1)
+        st.dataframe(df, 800,300)
         st.markdown("## 2.予測したいターゲットの選択")
         #オプション　value = df.column[0]
+        #target = st.radio()
+        #target = st.selectbox()
         target = st.text_input(label='ターゲット名を正しく入力してください（例：年商）')
         
         if target != "":
@@ -55,7 +69,9 @@ def app():
                 st.markdown("モデル構築が完了しました")
                 
                 st.markdown("自分のパソコンに拡張子がpklのファイルがあることを確認して、予測フェーズへと進んでください")
-        
+    
+
+
 
  
 
@@ -72,3 +88,8 @@ def app():
 #             latest_iteration.text(f'Iteration {i + 1}')
 #             bar.progress(i + 1)
 #             time.sleep(0.1)
+
+#初期化
+    # def clear_cache():
+    #     if st.button("initialize"):
+    #         st.experimental_memo.clea
