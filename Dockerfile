@@ -2,6 +2,7 @@
 FROM python:3.7
 USER root
 
+#日本語のドキュメント
 RUN apt-get update
 RUN apt-get -y install locales && \
     localedef -f UTF-8 -i ja_JP ja_JP.UTF-8
