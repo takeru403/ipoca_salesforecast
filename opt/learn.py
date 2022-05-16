@@ -9,6 +9,7 @@ import os
 import streamlit.components.v1 as stc
 import time
 from pycaret.regression import *
+from yellowbrick.model_selection import FeatureImportances
 
 
 def app():
@@ -36,7 +37,7 @@ def app():
         def delete_feature(deletes):
             df = df.drop(deletes, axis=1)
             return df
-        deletes = st.multiselect("削除したい説明変数を入力してください。",list(df.columns))
+        deletes = st.multiselect("セレクトボックスから削除したい説明変数を選択してください",list(df.columns))
         df = df.drop(deletes, axis=1)
         st.dataframe(df, 800,300)
         st.markdown("## 2.予測したいターゲットの選択")
@@ -73,13 +74,17 @@ def app():
                 #ここでエラーが出る。
                 final = finalize_model(model)
                 save_model(final, select_model+target+'_saved_'+datetime.date.today().strftime('%Y%m%d'))
-                try:
-                     #特徴量寄与度
-                    plot_model(model, plot="feature", display_format="streamlit")
-                    #残差
-                    plot_model(model, plot="error", display_format="streamlit")
-                except Exception:
-                    print("プロットすることができないモデルです。")
+            
+                    #特徴量寄与度
+                    #plot_model(model, plot="feature", display_format="streamlit")
+                # viz = FeatureImportances(model)
+                # viz.fit(X, y)
+                # viz.show()
+                #     #残差
+                # plot_model(model, plot="error", display_format="streamlit")
+                
+                dashboard(model)
+            
                
                 st.markdown("モデル構築が完了しました")
                 
