@@ -57,7 +57,7 @@ def app():
                 #transformation =>　Trueにすることで乗数変換を用いて、データがガウス分布に従うようにする
                 #remove_outliers =>Trueにすると、特異値分解を利用したPCA線形時限削減を用いて、トレーニングデータから外れ値が削除される。
                 #log_data => Trueにすることで、訓練データとテストデータがcsvとして保存される。
-                ml = setup(data=df,target=target, html=False,silent=True, train_size=0.8)
+                ml = setup(data=df,target=target, html=False,silent=True, train_size=0.8, data_split_shuffle=False)
 
                 best = compare_models()
                 best_model_results = pull() # 結果をデータフレームとして得る。
