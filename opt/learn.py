@@ -57,7 +57,7 @@ def app():
                 #transformation =>　Trueにすることで乗数変換を用いて、データがガウス分布に従うようにする
                 #remove_outliers =>Trueにすると、特異値分解を利用したPCA線形時限削減を用いて、トレーニングデータから外れ値が削除される。
                 #log_data => Trueにすることで、訓練データとテストデータがcsvとして保存される。
-                ml = setup(data=df,target=target, html=False,silent=True, train_size=0.8, data_split_shuffle=False)
+                ml = setup(data=df,target=target, html=False,silent=True, train_size=0.8, shuffle=True
 
                 best = compare_models()
                 best_model_results = pull() # 結果をデータフレームとして得る。
@@ -73,11 +73,10 @@ def app():
                 #ここでエラーが出る。
                 final = finalize_model(model)
                 save_model(final, select_model+target+'_saved_'+datetime.date.today().strftime('%Y%m%d'))
-                #     #残差
-                # plot_model(model, plot="error", display_format="streamlit")
+                #残差
+                plot_model(model, plot="error", display_format="streamlit")
                 
-                dashboard(model)
-            
+                           
                
                 st.markdown("モデル構築が完了しました")
                 
