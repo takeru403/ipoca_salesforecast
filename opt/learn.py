@@ -9,7 +9,6 @@ import os
 import streamlit.components.v1 as stc
 import time
 from pycaret.regression import *
-from yellowbrick.model_selection import FeatureImportances
 
 
 def app():
@@ -74,12 +73,6 @@ def app():
                 #ここでエラーが出る。
                 final = finalize_model(model)
                 save_model(final, select_model+target+'_saved_'+datetime.date.today().strftime('%Y%m%d'))
-            
-                    #特徴量寄与度
-                    #plot_model(model, plot="feature", display_format="streamlit")
-                # viz = FeatureImportances(model)
-                # viz.fit(X, y)
-                # viz.show()
                 #     #残差
                 # plot_model(model, plot="error", display_format="streamlit")
                 
