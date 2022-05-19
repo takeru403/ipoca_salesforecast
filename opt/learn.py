@@ -8,7 +8,6 @@ import os
 import streamlit.components.v1 as stc
 import time
 from pycaret.regression import *
-import altair as alt
 
 def app():
     st.markdown("# 学習フェーズ")
@@ -23,12 +22,6 @@ def app():
         
         df = df.set_index('店舗名')
         st.dataframe(df, 800,300)
-
-        # item1 = st.selectbox("x軸の選択",list(df.columns))
-        # item2 = st.selectbox("y軸の選択",list(df.columns))
-
-        # c = alt.Chart(df).mark_circle().encode(x=alt.X("年商"),y=alt.Y("レジ客数"), color='c')
-        # st.altair_chart(c, use_container_width=True)
 
         st.markdown("## 削除したい説明変数はありますか?")
         @st.cache()
@@ -90,16 +83,3 @@ def app():
 
 
 
-#学習中にこの表示を行う
-# latest_iteration = st.empty()
-        
-# bar = st.progress(0)
-#         for i in range(100):
-#             latest_iteration.text(f'Iteration {i + 1}')
-#             bar.progress(i + 1)
-#             time.sleep(0.1)
-
-#初期化
-    # def clear_cache():
-    #     if st.button("initialize"):
-    #         st.experimental_memo.clea

@@ -8,9 +8,6 @@ from pycaret.regression import *
 
 def app():
     st.markdown("# 予測フェーズ")
-    #ここはコメントアウト
-    
-
     st.markdown("# 2.モデルを読み込みます")
     pkl_lt = [''] + [f[:-4] for f in os.listdir(os.getcwd()) if f[-4:]=='.pkl']
     model_name = st.selectbox(label='ドロップダウンリストからモデルを選択してください',options=pkl_lt,key='model')
