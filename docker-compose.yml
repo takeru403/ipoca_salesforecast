@@ -22,7 +22,7 @@ services:
       - ./opt:/root/opt
     ports: 
       - '8501:8501'
-    command: streamlit run /opt/main.py
+    command: streamlit run /root/opt/app.py
 
 
 

@@ -6,3 +6,4 @@ streamlit==1.4.0
 pycaret
 japanize-matplotlib
 scikit-learn==0.23.2
+click==7.0
