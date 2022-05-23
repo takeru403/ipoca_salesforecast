@@ -8,6 +8,8 @@ import os
 import streamlit.components.v1 as stc
 import time
 from pycaret.regression import *
+from typing import List
+
 
 def app():
     st.markdown("# 学習フェーズ")
@@ -23,19 +25,29 @@ def app():
         df = df.set_index('店舗名')
         st.dataframe(df, 800,300)
 
+        #セレクトボックスから変数を選んで散布図のxとyを決める機能
+        x:str = st.selectbox("x軸を選んでください",list(df.columns))
+        y:str = st.selectbox("y軸を選んでください",list(df.columns))
+        x_list:List[float] = df[x]
+        y_list:List[float] = df[y]
+        fig, ax = plt.subplots()
+        ax.scatter(x_list,y_list,color='green',alpha=0.6)
+        st.subheader('説明変数の散布図')
+        st.pyplot(fig)
+
+        #説明変数を削除する機能
         st.markdown("## 削除したい説明変数はありますか?")
         @st.cache()
         def delete_feature(deletes):
             df = df.drop(deletes, axis=1)
             return df
-        deletes = st.multiselect("セレクトボックスから削除したい説明変数を選択してください",list(df.columns))
+        deletes:str = st.multiselect("セレクトボックスから削除したい説明変数を選択してください",list(df.columns))
         df = df.drop(deletes, axis=1)
         st.dataframe(df, 800,300)
         st.markdown("## 2.予測したいターゲットの選択")
         #オプション　value = df.column[0]
         #あとで検討、一旦radioボタン
-        target = st.radio("目的変数",("年商","レジ客数","客単価"))
-        #target = st.text_input(label='ターゲット名を正しく入力してください（例：年商）')
+        target:str = st.radio("目的変数",("年商","レジ客数","客単価"))
         
         if target != "":
             st.markdown("## 3.機械学習を始めます。")
@@ -50,7 +62,6 @@ def app():
                 #remove_outliers =>Trueにすると、特異値分解を利用したPCA線形時限削減を用いて、トレーニングデータから外れ値が削除される。
                 #log_data => Trueにすることで、訓練データとテストデータがcsvとして保存される。
                 ml = setup(data=df,target=target, html=False,silent=True, train_size=0.8,fold_shuffle=True)
-
                 best = compare_models()
                 best_model_results = pull() # 結果をデータフレームとして得る。
                 
@@ -65,11 +76,14 @@ def app():
                 #ここでエラーが出る。
                 final = finalize_model(model)
                 save_model(final, select_model+target+'_saved_'+datetime.date.today().strftime('%Y%m%d'))
+                #特徴量説明量s
+                plot_model(model, plot="feature", display_format="streamlit")
+
                 #残差
                 plot_model(model, plot="error", display_format="streamlit")
+
                 
-                           
-               
+
                 st.markdown("モデル構築が完了しました")
                 
                 st.markdown("自分のパソコンに拡張子がpklのファイルがあることを確認して、予測フェーズへと進んでください")
